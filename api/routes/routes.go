@@ -28,4 +28,7 @@ func Routes(rou *mux.Router, db *sql.DB) {
 	rou.HandleFunc("/update/{id}", func(w http.ResponseWriter, r *http.Request) {
 		controllers.UpdateMobile(w, r, db)
 	})
+	rou.HandleFunc("/search", func(w http.ResponseWriter, r *http.Request) {
+		controllers.SearchMobile(w, r, db)
+	})
 }

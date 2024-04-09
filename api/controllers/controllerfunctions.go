@@ -217,3 +217,32 @@ func UpdateMobile(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		w.Write([]byte("updated"))
 	}
 }
+func SearchMobile(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	var mobiles []utils.MobileDetail
+	var mobile utils.MobileDetail
+	uploadDir := "/home/nidhinsajeev/Desktop/mobileapp/uploads/"
+	query := r.URL.Query().Get("query")
+	fmt.Println(query)
+	queryStmt := "SELECT * FROM MobileDetails WHERE LOWER(name) LIKE '%' || LOWER($1) || '%' OR LOWER(specs) LIKE '%' || LOWER($2) || '%'"
+	rows, err := db.Query(queryStmt, "%"+query+"%", "%"+query+"%")
+	if err != nil {
+		http.Error(w, "error in executing query", http.StatusInternalServerError)
+		return
+	}
+	for rows.Next() {
+		if err := rows.Scan(&mobile.ID, &mobile.Name, &mobile.Specs, &mobile.Price, &mobile.Image); err != nil {
+			http.Error(w, "error scanning rows", http.StatusInternalServerError)
+			return
+		}
+		mobile.Image = uploadDir + mobile.Image
+		mobiles = append(mobiles, mobile)
+	}
+	rows.Close()
+
+	jsondata, _ := json.Marshal(mobiles)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+	w.Header().Set("Content-type", "application/json")
+	w.Write(jsondata)
+}
