@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobiles</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .myimage {
+            
+          
+            height: 200px;
+
+           
+            
+        }
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-left:20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Mobiles</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="file:///home/nidhinsajeev/Desktop/mobileapp/templates/createform.html">Add Mobile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="card-container">
+        <h1>Mobiles</h1>
+        <div class="row justify-content-center"  id="mobileList">
+            
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        fetch('http://localhost:8080/mobiles')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+
+            .then(data => {
+                displayStudents(data);
+                console.log(data)
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        function displayStudents(students) {
+            const mobileList = document.getElementById('mobileList');
+            students.forEach(student => {
+                const studentDiv = document.createElement('div');
+                
+                studentDiv.innerHTML = `
+                <div class="col-sm-4 col-md-4 col-lg-4 mb-4">
+                <div class="card  text-center" id="mobileList" style="width: 18rem;">
+                    <a href="file:///home/nidhinsajeev/Desktop/mobileapp/templates/student.html?id=${student.id}"><img class="img-fluid rounded card-image-top myimage" src="${student.image}" alt="Card image cap"></a>
+                <div class="card-body">
+                <div class="card-title"><h5>${student.name}</h5>
+                <p class="card-text">${student.price}</p>
+                <a href="file:///home/nidhinsajeev/Desktop/mobileapp/templates/update.html?id=${student.id}" class="btn btn-primary">Update Mobile</a>
+                <hr><button onclick="confirmDelete('${student.id}')" class="btn btn-danger">Delete Mobile</button>
+                </div>
+                </div>
+                `;
+                mobileList.appendChild(studentDiv);
+            });
+        }
+        function confirmDelete(studentId) {
+        if (confirm("Are you sure you want to delete this mobile?")) {
+            const stmt='http://localhost:8080/delmobile/'+studentId
+            console.log(stmt)
+            fetch(stmt)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data)
+                window.location.assign('listview.html');
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        }
+    }
+    </script>
+   
+</body>
+</html>
