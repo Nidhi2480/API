@@ -1,84 +1,24 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            width: 300px;
-            margin: 0 auto;
-            margin-top: 100px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        input[type="text"],
-        input[type="password"],
-        input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            box-sizing: border-box;
-        }
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="container">
         <h2>Login</h2>
-        <form action="/login" method="post">
+        <form id="loginForm" action="" method="post">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
-            <button type="button" id="sendButton">LOGIN</button>
+            <button type="submit">LOGIN</button>
         </form>
-        <a href="file:///home/nidhinsajeev/Desktop/go%20practice/API/STATIC/edit.html" ><button>REGISTER</button></a>
+        <a href="register.html"><button>REGISTER</button></a>
     </div>
+
+    <script src="js/loginscript.js"></script>
 </body>
 </html>
-<script>
-   function Login(){
-        const username=document.getElementById('username').value
-        const password=document.getElementById('password').value
-        const formData=new FormData()
-        formData.append('username', username);
-        formData.append('password', password);
-        fetch("http://localhost:8080/login", {
-        method:"POST",
-        body: formData
-        })
-        .then(response => {if (!response.ok){
-            throw new Error('Network response was not ok');
-        }
-        return response.text();
-        
-        })
-        .then (data => {
-            if (data.includes("successful")) {
-                window.alert("Login successful!");
-                window.location.assign('listview.html');
-            } else {
-                window.alert(data);
-            }
-        })
-        .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
-    }
-    document.getElementById("sendButton").addEventListener("click",Login);
-</script>

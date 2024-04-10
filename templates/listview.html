@@ -32,14 +32,9 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="file:///C:/Users/nidhi/Desktop/mobileApps/templates/listview.html">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="file:///home/nidhinsajeev/Desktop/mobileapp/templates/createform.html">Add Mobile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
+              
             </ul>
             <form class="form-inline my-2 my-lg-0" id="searchForm">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" id="searchInput" aria-label="Search">
@@ -50,6 +45,7 @@
 
     <div class="container">
         <h1 class="mt-4">Mobiles</h1>
+        <h1 class="text-center" id="header2"></h1>
         <div class="card-container">
             <div class="row justify-content-between" id="mobileList"></div>
         </div>
@@ -87,12 +83,11 @@
                 studentDiv.classList.add('col-md-4','mt-4');
                 studentDiv.innerHTML = `
                 <div class="card  text-center" style="width: 18rem;">
-                    <a href="file:///home/nidhinsajeev/Desktop/mobileapp/templates/student.html?id=${student.id}"><img class="img-fluid rounded card-image-top myimage" src="${student.image}" alt="Card image cap"></a>
+                    <a href="file:///C:/Users/nidhi/Desktop/mobileApps/templates/student.html?id=${student.id}"><img class="img-fluid rounded card-image-top myimage" src="${student.image}" alt="Card image cap"></a>
                 <div class="card-body">
                 <div class="card-title"><h5>${student.name}</h5>
+                <p class="card-text">${student.specs}</p>
                 <p class="card-text">${student.price}</p>
-                <a href="file:///home/nidhinsajeev/Desktop/mobileapp/templates/update.html?id=${student.id}" class="btn btn-primary">Update Mobile</a>
-                <hr><button onclick="confirmDelete('${student.id}')" class="btn btn-danger">Delete Mobile</button>
                 </div>
                 `;
                 mobileList.appendChild(studentDiv);
@@ -113,7 +108,6 @@
             .then(data => {
                 console.log(data)
                 fetchMobiles();
-                
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
@@ -123,7 +117,7 @@
 
 
     document.getElementById("searchForm").addEventListener("submit", function(event) {
-        
+        event.preventDefault();
         const query = document.getElementById("searchInput").value.trim();
         console.log(query)
         fetch(`http://localhost:8080/search?query=${query}`)
@@ -134,9 +128,16 @@
             return response.json();
         })
         .then(data => {
-            
+            if (data!=null){
+            header2.innerHTML = '';
+            document.getElementById('header2').innerHTML = `You've searched for "${query}"`
             console.log(data);
-            displayStudents(data);
+            displayStudents(data);}
+            else{
+                console.log("no results found")
+                document.getElementById('header2').innerHTML = `no results found for "${query}"`
+                mobileList.innerHTML = '';
+            }
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);

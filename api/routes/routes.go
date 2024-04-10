@@ -31,4 +31,5 @@ func Routes(rou *mux.Router, db *sql.DB) {
 	rou.HandleFunc("/search", func(w http.ResponseWriter, r *http.Request) {
 		controllers.SearchMobile(w, r, db)
 	})
+	rou.HandleFunc("/images/{fileName}", controllers.ImageHandler)
 }
