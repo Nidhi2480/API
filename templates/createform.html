@@ -3,53 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Mobile Detail</title>
+    <title>Add Mobile</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h2>Add Mobile Detail</h2>
-    <form id="mobileDetailForm" enctype="multipart/form-data">
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" required><br>
-        <label for="specs">Specs:</label><br>
-        <textarea id="specs" name="specs" rows="4" required></textarea><br>
-        <label for="price">Price:</label><br>
-        <input type="number" id="price" name="price" step="0.01" required><br>
-        <label for="image">Image:</label><br>
-        <input type="file" id="image" name="image" accept="image/*" required><br>
-        <input type="submit" value="Submit">
-    </form>
-
-    <script>
-        document.getElementById("mobileDetailForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            // Get form data
-            const formData = new FormData(this);
-
-            // Submit form data via fetch to your API endpoint
-            fetch("http://localhost:8080/addmobile", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("Server response:", data);
-                alert("Mobile detail added successfully!");
-                window.location.assign('listview.html');
-                
-                // Optionally, redirect to another page after successful submission
-                // window.location.href = "listview.html";
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-                alert("Failed to add mobile detail. Please try again.");
-            });
-        });
-    </script>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Mobiles</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="listview.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="adminview.html">Edit Mobiles</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" id="searchForm">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" id="searchInput" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0"  type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+    <div class="container">
+        <h2>Add Mobile Details</h2>
+        <form id="mobileDetailForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name">
+            </div>
+            <div class="form-group">
+                <label for="specs">Specs:</label>
+                <textarea class="form-control" id="specs" name="specs" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" class="form-control" id="price" name="price" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="image">Image:</label>
+                <input type="file" class="form-control-file" id="image" name="image" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script src="js/createscript.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+   
 </body>
 </html>

@@ -4,102 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Mobile Detail</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h2>Update Mobile Detail</h2>
-    <form id="mobileDetailForm" enctype="multipart/form-data">
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" ><br>
-        <label for="specs">Specs:</label><br>
-        <textarea id="specs" name="specs" rows="4" ></textarea><br>
-        <label for="price">Price:</label><br>
-        <input type="number" id="price" name="price" step="0.01" ><br>
-        <label for="image">Image:</label><br>
-        <input type="file" id="image" name="image" accept="image/*" required><br>
-        <input type="submit" value="Submit">
-    </form>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Mobiles</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="listview.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="createform.html">Add Mobile</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" id="searchForm">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" id="searchInput" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0"  type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+    <div class="container">
+        <h2>Update Mobile Detail</h2>
+        <form id="mobileDetailForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name">
+            </div>
+            <div class="form-group">
+                <label for="specs">Specs:</label>
+                <textarea class="form-control" id="specs" name="specs" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" class="form-control" id="price" name="price" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="image">Image:</label>
+                <input type="file" class="form-control-file" id="image" name="image" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script src="js/updatescript.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 
     <script>
-         window.onload = function() {
-            var currentURL = window.location.href;
-            var urlParts = currentURL.split('?');
-            if (urlParts.length > 1) {
-                var queryString = urlParts[1];
-                var params = queryString.split('&');
-                var id;
-                params.forEach(function(param) {
-                    var paramParts = param.split('=');
-                    if (paramParts[0] === 'id') {
-                        id = paramParts[1];
-                    }
-                });
-                if (id) {
-                    var secondAPIURL = "http://localhost:8080/getmobile/" + id;
-                    fetch(secondAPIURL)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        document.getElementById('name').value = data.name;
-                        document.getElementById('specs').value = data.specs;
-                        document.getElementById('price').value = data.price;
-                        document.getElementById('image').value = data.image;
-                    })
-                    .catch(error => {
-                        console.error('There was a problem with the fetch operation:', error);
-                    });
-                } else {
-                    console.error("Missing 'id' parameter in URL");
-                }
-            } else {
-                console.error("URL does not contain a query string");
-            }
-        };
-        document.getElementById("mobileDetailForm").addEventListener("submit", function(event) {
-            event.preventDefault(); 
-            const formData = new FormData(this);
-            var currentURL = window.location.href;
-            var urlParts = currentURL.split('?');
-            if (urlParts.length > 1) {
-            var queryString = urlParts[1];
-            var params = queryString.split('&');
-            var id;
-            params.forEach(function(param) {
-            var paramParts = param.split('=');
-            if (paramParts[0] === 'id') {
-            id = paramParts[1];
-            }
-            });
-            if (!id) {
-                console.error("Missing 'id' parameter");
-            } 
-            fetch("http://localhost:8080/update/"+id, {
-                method: "POST",
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.text();
-            })
-            .then(data => {
-                console.log("Server response:", data);
-                alert("Mobile detail updated successfully!");
-                window.location.assign('listview.html');
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-                alert("Failed to add mobile detail. Please try again.");
-            });
-        } else {
-            console.error("No query parameters found in the URL");
-        }
-        });
-    
+     
     </script>
 </body>
 </html>

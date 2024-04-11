@@ -1,84 +1,43 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
         }
         .container {
-            width: 300px;
-            margin: 0 auto;
             margin-top: 100px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        input[type="text"],
-        input[type="password"],
-        input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            box-sizing: border-box;
-        }
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #45a049;
+            width:30%;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container text-center">
+       
         <h2>Login</h2>
-        <form action="/login" method="post">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="button" id="sendButton">LOGIN</button>
+        
+        <form id="loginForm" action="" method="post">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="username" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="password"  id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary ">LOGIN</button>
         </form>
-        <a href="file:///home/nidhinsajeev/Desktop/go%20practice/API/STATIC/edit.html" ><button>REGISTER</button></a>
+   
     </div>
+
+    <script>
+        
+    </script>
+    <script src="js/loginscript.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-<script>
-   function Login(){
-        const username=document.getElementById('username').value
-        const password=document.getElementById('password').value
-        const formData=new FormData()
-        formData.append('username', username);
-        formData.append('password', password);
-        fetch("http://localhost:8080/login", {
-        method:"POST",
-        body: formData
-        })
-        .then(response => {if (!response.ok){
-            throw new Error('Network response was not ok');
-        }
-        return response.text();
-        
-        })
-        .then (data => {
-            if (data.includes("successful")) {
-                window.alert("Login successful!");
-                window.location.assign('listview.html');
-            } else {
-                window.alert(data);
-            }
-        })
-        .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
-    }
-    document.getElementById("sendButton").addEventListener("click",Login);
-</script>
