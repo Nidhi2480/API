@@ -32,6 +32,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
+<<<<<<< HEAD
                     <a class="nav-link" href="listview.html">Home</a>
                 </li>
                 <li class="nav-item">
@@ -47,6 +48,10 @@
                     <a class="nav-link" id="logoutButton" href="#">Logout</a>
                 </li>
                
+=======
+                    <a class="nav-link" href="file:///C:/Users/nidhi/Desktop/mobileApps/templates/listview.html">Home</a>
+                </li>
+>>>>>>> 5b80a44f5c6aa687719752b3d40f36b88def21aa
               
             </ul>
             <form class="form-inline my-2 my-lg-0" id="searchForm">
@@ -67,5 +72,101 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<<<<<<< HEAD
+=======
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+                    fetchMobiles();
+                });
+
+                function fetchMobiles() {
+                fetch('http://localhost:8080/mobiles')
+                .then(response => {
+                if (!response.ok) {
+                throw new Error('Network response was not ok');
+                }
+                return response.json();
+                })
+                .then(data => {
+                displayStudents(data);
+                })
+                .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+                });
+            }
+
+        function displayStudents(students) {
+           
+            const mobileList = document.getElementById('mobileList');
+            mobileList.innerHTML = '';
+            students.forEach(student => {
+                const studentDiv = document.createElement('div');
+                studentDiv.classList.add('col-md-4','mt-4');
+                studentDiv.innerHTML = `
+                <div class="card  text-center" style="width: 18rem;">
+                    <a href="file:///C:/Users/nidhi/Desktop/mobileApps/templates/student.html?id=${student.id}"><img class="img-fluid rounded card-image-top myimage" src="${student.image}" alt="Card image cap"></a>
+                <div class="card-body">
+                <div class="card-title"><h5>${student.name}</h5>
+                <p class="card-text">${student.specs}</p>
+                <p class="card-text">${student.price}</p>
+                </div>
+                `;
+                mobileList.appendChild(studentDiv);
+            });
+        }
+
+        function confirmDelete(studentId) {
+        if (confirm("Are you sure you want to delete this mobile?")) {
+            const stmt='http://localhost:8080/delmobile/'+studentId
+            console.log(stmt)
+            fetch(stmt)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data)
+                fetchMobiles();
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        }
+    }
+
+
+    document.getElementById("searchForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const query = document.getElementById("searchInput").value.trim();
+        console.log(query)
+        fetch(`http://localhost:8080/search?query=${query}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data!=null){
+            header2.innerHTML = '';
+            document.getElementById('header2').innerHTML = `You've searched for "${query}"`
+            console.log(data);
+            displayStudents(data);}
+            else{
+                console.log("no results found")
+                document.getElementById('header2').innerHTML = `no results found for "${query}"`
+                mobileList.innerHTML = '';
+            }
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    });
+
+    </script>
+   
+>>>>>>> 5b80a44f5c6aa687719752b3d40f36b88def21aa
 </body>
 </html>

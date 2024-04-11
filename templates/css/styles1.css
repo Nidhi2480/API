@@ -1,0 +1,17 @@
+/* styles1.css */
+
+/* Student information styling */
+#studentInfo {
+    margin-top: 2rem; /* Top margin */
+    padding: 1rem; /* Padding */
+    background-color: #fff; /* Background color */
+    border: 1px solid #dee2e6; /* Border */
+    border-radius: 0.25rem; /* Border radius */
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); /* Box shadow for depth */
+}
+
+/* Heading styling */
+#head {
+    text-align: center; /* Center align the heading */
+    margin-bottom: 2rem; /* Bottom margin */
+}

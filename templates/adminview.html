@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,3 +69,155 @@
 
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .img-container {
+            width: 150px;
+            height: 200px; /* Set a fixed height */
+            overflow: hidden; /* Hide any overflow */
+        }
+        .img-container img {
+            width: 100%; /* Make the image fill its container */
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
+</head>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Mobiles</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="file:///C:/Users/nidhi/Desktop/mobileApps/templates/createform.html">Add Mobile</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0" id="searchForm">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" id="searchInput" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0"  type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+
+<body>
+    <h6 class="text-center my_title">Your List</h6><br>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-12 mb-9">
+                <table class="table">
+                    <tbody id="mobileList"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetchMobiles();
+        });
+
+        function fetchMobiles() {
+            fetch('http://localhost:8080/mobiles')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayMobiles(data);
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        }
+
+        function displayMobiles(mobiles) {
+            const mobileList = document.getElementById('mobileList');
+            mobileList.innerHTML = '';
+            var counter=0
+            mobiles.forEach(mobile => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <th scope="row">${++counter}</th>
+                    <td>
+                        <div class="img-container">
+                            <a href="file:///C:/Users/nidhi/Desktop/mobileApps/templates/student.html?id=${mobile.id}">
+                                <img class="img-fluid rounded " src="${mobile.image}" alt="Movie Poster">
+                            </a>
+                        </div>
+                    </td>
+                    <td class="movie-details">
+                        <p class="my_title4">
+                            <b>${mobile.name}</b><br>
+                            Mobile specs:<b>${mobile.specs}<br></b>
+                            <p class="text-right"><b><br></b></p>
+                            </p>
+                            <hr>
+                            <a class="btn btn-warning" href="file:///C:/Users/nidhi/Desktop/mobileApps/templates/update.html?id=${mobile.id}"> update</a>
+                            <button onclick="confirmDelete('${mobile.id}')" class="btn btn-danger">Delete Mobile</button>
+                            
+                    </td>
+                `;
+                mobileList.appendChild(row);
+            });
+        }
+        function confirmDelete(studentId) {
+        if (confirm("Are you sure you want to delete this mobile?")) {
+            const stmt='http://localhost:8080/delmobile/'+studentId
+            console.log(stmt)
+            fetch(stmt)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data)
+                fetchMobiles();
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        }
+    }
+    document.getElementById("searchForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const query = document.getElementById("searchInput").value.trim();
+        console.log(query)
+        fetch(`http://localhost:8080/search?query=${query}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            
+            console.log(data);
+            displayMobiles(data);
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    });
+
+    </script>
+</body>
+</html>
+>>>>>>> 5b80a44f5c6aa687719752b3d40f36b88def21aa
