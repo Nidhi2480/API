@@ -20,20 +20,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function displayStudentInfo(mobile) {
     document.getElementById('head').innerHTML = mobile.name;
-    const studentInfoDiv = document.getElementById('studentInfo');
+    const studentInfoDiv = document.getElementById('mobileInfo');
     const studentInfoHTML = `
     <div class="row">
     <div class="col-md-4">
-        <a href="file:///home/nidhinsajeev/Desktop/mobileapp/templates/student.html?id=${mobile.id}">
-            <img src="${mobile.image}" class="img-fluid rounded" alt="Student Image">
+        <a href="viewmobile.html?id=${mobile.id}">
+            <img src="${mobile.image}" class="img-fluid rounded" alt="mobile Image">
         </a>
     </div>
     <div class="col-md-8">
-        <div class="student-details">
-            <p><strong>Name:</strong> ${mobile.name}</p>
-            <p><strong>Specifications:</strong> ${mobile.specs}</p><br><hr>
-            <p><strong>Rs.</strong> ${mobile.price}</p>
-        </div>
+        <div class="mobile-details border border-secondary rounded p-4 ">
+            <p><strong>Name:</strong> ${mobile.name}</p></div><br>
+            <div class="mobile-details border border-secondary rounded p-4 ">
+            <p><strong>Specifications:</strong> ${mobile.specs}</p><br></div><br>
+            <div class="mobile-details border border-secondary rounded p-4 ">
+            <p><strong>Rs.</strong> ${mobile.price}/-</p>
+            </div>
     </div>
 </div>
 `;

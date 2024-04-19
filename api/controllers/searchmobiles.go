@@ -4,7 +4,6 @@ import (
 	"api/utils"
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -13,7 +12,6 @@ func SearchMobile(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	var mobile utils.MobileDetail
 	uploadDir := "../uploads/"
 	query := r.URL.Query().Get("query")
-	fmt.Println(query)
 	queryStmt := "SELECT * FROM MobileDetails WHERE LOWER(name) LIKE '%' || LOWER($1) || '%' OR LOWER(specs) LIKE '%' || LOWER($2) || '%'"
 	rows, err := db.Query(queryStmt, "%"+query+"%", "%"+query+"%")
 	if err != nil {

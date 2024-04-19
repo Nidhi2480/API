@@ -1,19 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
-    var currentURL = window.location.href;
-var urlParts = currentURL.split('?');
-if (urlParts.length > 1) {
-    var queryString = urlParts[1];
-    var params = queryString.split('&');
-    var id;
-    params.forEach(function(param) {
-        var paramParts = param.split('=');
-        if (paramParts[0] === 'id') {
-            id = paramParts[1];
-        }
-    });
-    if (!id) {
-        console.error("Missing 'id' parameter");
-    } else {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
     var secondAPIURL = "http://localhost:8080/getmobile/" + id;
     fetch(secondAPIURL) 
     .then(response => {
@@ -28,9 +15,7 @@ if (urlParts.length > 1) {
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
     });
-}} else {
-    console.error("URL does not contain a query string");
-}}
+}
 );
 
 function displayStudentInfo(student) {

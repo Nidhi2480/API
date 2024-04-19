@@ -19,6 +19,7 @@ function fetchMobiles() {
 }
 
 function displayMobiles(mobiles) {
+    
     const mobileList = document.getElementById('mobileList');
     mobileList.innerHTML = '';
     var counter=0
@@ -29,7 +30,7 @@ function displayMobiles(mobiles) {
             <td>
                 <div class="img-container">
                     <a href="viewmobile.html?id=${mobile.id}">
-                        <img class="img-fluid rounded " src="${mobile.image}" alt="Movie Poster">
+                        <img class="img-fluid rounded " src="${mobile.image}" alt="Mobile Phone">
                     </a>
                 </div>
             </td>
@@ -49,20 +50,25 @@ function displayMobiles(mobiles) {
     });
 }
 function confirmDelete(studentId) {
+    
 if (confirm("Are you sure you want to delete this mobile?")) {
+    const sessionID = sessionStorage.getItem('sessionID');
     const stmt='http://localhost:8080/delmobile/'+studentId
     console.log(stmt)
     fetch(stmt, {
-    method: 'DELETE'
+    method: 'DELETE',
+    headers: {
+        "Authorization": sessionID
+    }
     })
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        return response.text();
+        return response.json();
     })
     .then(data => {
-        console.log(data)
+        window.alert(data.message)
         fetchMobiles();
     })
     .catch(error => {

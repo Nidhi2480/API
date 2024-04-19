@@ -9,7 +9,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Mobiles</a>
+        <a class="navbar-brand" href="#">Add Mobiles</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -23,33 +23,41 @@
                     <a class="nav-link" href="adminview.html">Edit Mobiles</a>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0" id="searchForm">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" id="searchInput" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0"  type="submit">Search</button>
-            </form>
         </div>
-    </nav>
-    <div class="container">
-        <h2>Add Mobile Details</h2>
+    </nav><br>
+    <div class="container text-center border border-secondary rounded p-4">
+        <h2>Add Mobile Details</h2><br>
         <form id="mobileDetailForm" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" class="form-control" id="name" name="name">
+            <div class="form-group row">
+                <label for="name" class="col-sm-2 col-form-label text-left">Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="name" name="name">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="specs">Specs:</label>
-                <textarea class="form-control" id="specs" name="specs" rows="4"></textarea>
+            <div class="form-group row">
+                <label for="specs" class="col-sm-2 col-form-label text-left">Specifications</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" id="specs" name="specs" rows="4"></textarea>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="price">Price:</label>
-                <input type="number" class="form-control" id="price" name="price" step="0.01">
+            <div class="form-group row">
+                <label for="price" class="col-sm-2 col-form-label text-left">Price</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="price" name="price" step="0.01">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="image">Image:</label>
-                <input type="file" class="form-control-file" id="image" name="image" accept="image/*" required>
+            <div class="form-group row">
+                <label for="image" class="col-sm-2 col-form-label text-left">Upload the image</label>
+                <div class="col-sm-10">
+                    <input type="file" class="form-control-file" id="image" name="image" accept="image/*" required>
+                </div>
+            </div><hr>
+            <div class="form-group row">
+                <div class="col-sm-10 offset-sm-1">
+                    <button type="submit" class="btn btn-secondary">Submit</button>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        </form> 
     </div>
     <script src="js/createscript.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

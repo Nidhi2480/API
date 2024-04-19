@@ -13,6 +13,7 @@ window.onload = function() {
         document.getElementById('name').value = data.name;
         document.getElementById('specs').value = data.specs;
         document.getElementById('price').value = data.price;
+        document.getElementById('imagePreview').src = data.image;
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
@@ -24,20 +25,34 @@ event.preventDefault();
 const formData = new FormData(this);
 const urlParams = new URLSearchParams(window.location.search);
 const productId = urlParams.get('id');
+const imageFile = formData.get('image');
+const sessionID = sessionStorage.getItem('sessionID');
+console.log(imageFile)
+    if (imageFile.name == "") {
+
+        const imageUrl = document.getElementById('imagePreview').src;
+        const imageName = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
+        formData.append('image1', imageName);
+        console.log(imageName)
+    }
 fetch("http://localhost:8080/update/"+productId, {
 method: "PUT",
-body: formData
+body: formData,
+headers: {
+    "Authorization": sessionID
+}
 })
 .then(response => {
 if (!response.ok) {
     throw new Error('Network response was not ok');
 }
-return response.text();
+return response.json();
 })
 .then(data => {
-alert("Mobile detail updated successfully!");
-console.log("Server response:", data);
-window.location.assign('listview.html');
+    const updatedName = data.name;
+    window.alert(updatedName + " details updated successfully!");
+    window.location.assign('listview.html');
+   
 })
 .catch(error => {
 console.error('There was a problem with the fetch operation:', error);

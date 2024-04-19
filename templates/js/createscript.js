@@ -1,9 +1,13 @@
 document.getElementById("mobileDetailForm").addEventListener("submit", function(event) {
     event.preventDefault();
     const formData = new FormData(this);
+    const sessionID = sessionStorage.getItem('sessionID');
     fetch("http://localhost:8080/addmobile", {
         method: "POST",
-        body: formData
+        body: formData,
+        headers: {
+            "Authorization": sessionID
+        }
     })
     .then(response => {
         if (!response.ok) {
@@ -12,10 +16,9 @@ document.getElementById("mobileDetailForm").addEventListener("submit", function(
         return response.json();
     })
     .then(data => {
-        alert("Mobile detail added successfully!");
-        console.log("Server response:", data);
+        createdName=data.name;
+        window.alert(createdName+ "details added successfully!");
         window.location.assign('listview.html');
-        
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);

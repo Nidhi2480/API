@@ -1,7 +1,9 @@
 package controllers
 
 import (
+	"api/utils"
 	"database/sql"
+	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -9,6 +11,7 @@ import (
 )
 
 func DelMobile(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	var Mesg utils.Message
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["id"])
 	_, err := db.Exec("DELETE FROM MobileDetails WHERE id=$1", id)
@@ -16,7 +19,8 @@ func DelMobile(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		http.Error(w, "cant select", http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("content-type", "text/plain")
-	w.Write([]byte("deleted"))
-
+	Mesg.Data = "Mobile Deleted"
+	jsondata, _ := json.Marshal(Mesg)
+	w.Header().Set("Content-type", "application/json")
+	w.Write(jsondata)
 }

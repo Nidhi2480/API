@@ -4,68 +4,64 @@ import (
 	"api/utils"
 	"database/sql"
 	"encoding/json"
-<<<<<<< HEAD
-=======
 	"fmt"
->>>>>>> 5b80a44f5c6aa687719752b3d40f36b88def21aa
 	"net/http"
+	"time"
+
+	"github.com/golang-jwt/jwt/v5"
 )
+
+var secretKey = []byte("secret-key")
 
 func Login(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	var user1 utils.User
-	var user2 utils.User
+	var password string
+	var Mesg utils.Message
 	user1.Username = r.FormValue("username")
-	user1.Password = r.FormValue("password")
-<<<<<<< HEAD
+	password = r.FormValue("password")
 	stmt := `SELECT id,password,role FROM users WHERE username=$1`
-	err := db.QueryRow(stmt, user1.Username).Scan(&user2.Id, &user2.Password, &user2.Role)
-
-	w.Header().Set("Content-type", "application/json")
+	err := db.QueryRow(stmt, user1.Username).Scan(&user1.Id, &user1.Password, &user1.Role)
+	w.Header().Set("Content-Type", "application/json")
 	if err != nil {
-		http.Error(w, "no such user", http.StatusInternalServerError)
+		Mesg.Data = "No Such User"
+		jsondata, _ := json.Marshal(Mesg)
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write(jsondata)
 		return
 	}
-	if user1.Password == user2.Password {
-		user2.Password = "0"
-		jsondata, _ := json.Marshal(user2)
-		w.Write([]byte(jsondata))
-	} else {
-		http.Error(w, "password incorrect", http.StatusInternalServerError)
 
-	}
-=======
-	// 	stmt := `SELECT * FROM users WHERE username=$1`
-	// 	err := db.QueryRow(stmt, user1.Username).Scan(&user2.Id, &user2.Username, &user2.Password, &user2.Email, &user2.Role)
-	// 	fmt.Println(user2.Email)
-	// 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	// 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-	// 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-	// 	w.Header().Set("Content-type", "plain/text")
-	// 	if err != nil {
-	// 		w.Write([]byte("there is no such user"))
-	// 		return
-	// 	}
-	// 	if user1.Password == user2.Password {
-	// 		w.Write([]byte("successful"))
-	// 	} else {
-	// 		w.Write([]byte("password is incorrect"))
-
-	// 	}
-	// }
-
-	stmt := "SELECT id,password,role FROM users WHERE username=$1 AND password=$2"
-	err := db.QueryRow(stmt, user1.Username, user1.Password).Scan(&user2.Id, &user2.Password, &user2.Role)
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-	w.Header().Set("Content-type", "application/json")
-	if err != nil {
-		w.Write([]byte("there is no such user"))
+	if password != user1.Password {
+		Mesg.Data = "Password Mismatch"
+		jsondata, _ := json.Marshal(Mesg)
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write(jsondata)
 		return
 	}
-	fmt.Println(user2)
-	jsondata, _ := json.Marshal(user2)
-	w.Write([]byte(jsondata))
->>>>>>> 5b80a44f5c6aa687719752b3d40f36b88def21aa
+	tokenString, err := CreateToken(user1.Username)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintf(w, "Error generating token: %v", err)
+		return
+	}
 
+	response := map[string]string{"token": tokenString,
+		"role": user1.Role}
+	jsondata, _ := json.Marshal(response)
+	w.WriteHeader(http.StatusOK)
+	w.Write(jsondata)
+}
+
+func CreateToken(username string) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
+		jwt.MapClaims{
+			"username": username,
+			"exp":      time.Now().Add(time.Hour * 24).Unix(),
+		})
+
+	tokenString, err := token.SignedString(secretKey)
+	if err != nil {
+		return "", err
+	}
+
+	return tokenString, nil
 }

@@ -32,7 +32,7 @@ function displayMobiles(mobile) {
             <a href="viewmobile.html?id=${mobile.id}"><img class="img-fluid rounded card-image-top myimage" src="${mobile.image}" alt="Card image cap"></a>
         <div class="card-body">
         <div class="card-title"><h5>${mobile.name}</h5>
-        <p class="card-text"><b>Rs.</b>${mobile.price}</p>
+        <p class="card-text"><b>Rs.</b>${mobile.price}/-</p>
         </div>
         `;
         mobileList.appendChild(mobileDiv);
@@ -65,8 +65,29 @@ fetch(`http://localhost:8080/search?query=${query}`)
     console.error('There was a problem with the fetch operation:', error);
 });
 });
-const sessionID = sessionStorage.getItem('sessionID');
-if (sessionID === "admin") {
+// const sessionID = sessionStorage.getItem('sessionID');
+// if(sessionID){
+//     console.log(sessionID)
+//     const button1 = document.getElementById("loginButon");
+//     if (button1) {
+//         button1.style.display = "none";
+//     }
+//     const button = document.getElementById("logoutButton");
+//     if (button) {
+//     button.style.display = "block";}
+// }else{
+//     const button1 = document.getElementById("loginButon");
+//     if (button1) {
+//         button1.style.display = "block";
+//     }
+//     const button = document.getElementById("logoutButton");
+//     if (button) {
+//     button.style.display = "none";
+// }
+// }
+
+const sessionROLE = sessionStorage.getItem('sessionROLE');
+if (sessionROLE === "admin") {
 document.getElementById("adminNavItem").style.display = "block";
 document.getElementById("adminNavItem1").style.display = "block";
 const button1 = document.getElementById("loginButon");
@@ -74,7 +95,7 @@ if (button1) {
     button1.style.display = "none";
 }
 
-} else if (sessionID === "user"){
+} else if (sessionROLE === "user"){
 document.getElementById("adminNavItem").style.display = "none";
 document.getElementById("adminNavItem1").style.display = "none";
 const button = document.getElementById("loginButon");
@@ -93,13 +114,6 @@ if (button) {
     button.style.display = "none";
 }
 }
-function logout() {
-  
-    sessionStorage.clear();
-    
-    window.location.assign('login.html');
-}
-
 
 document.getElementById("logoutButton").addEventListener("click", function() {
     logout();

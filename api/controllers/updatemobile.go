@@ -1,8 +1,11 @@
 package controllers
 
 import (
+	"api/additional"
 	"api/utils"
 	"database/sql"
+	"encoding/json"
+
 	"net/http"
 	"strconv"
 
@@ -24,13 +27,23 @@ func UpdateMobile(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		return
 	}
 	s1.Price = price
-	filename, _ := utils.UploadImage(w, r)
+	filename := ""
+	file, _, err := r.FormFile("image")
+	if err == nil {
+		defer file.Close()
+		filename, _ = additional.UploadImage(w, r)
+	} else {
+
+		filename = r.FormValue("image1")
+
+	}
 	_, err = db.Exec(`UPDATE MobileDetails SET name=$1, specs=$2, price=$3, image=$4 WHERE ID=$5`, s1.Name, s1.Specs, s1.Price, filename, id)
 	if err != nil {
 		http.Error(w, "Failed to update mobile details", http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("Content-type", "plain/text")
-	w.Write([]byte("updated"))
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(s1)
 
 }
