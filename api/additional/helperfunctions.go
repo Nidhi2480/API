@@ -1,6 +1,7 @@
 package additional
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -11,6 +12,7 @@ import (
 
 func UploadImage(w http.ResponseWriter, r *http.Request) (string, string) {
 	file, handler, err := r.FormFile("image")
+	fmt.Printf("file: %v\n", file)
 	if err != nil {
 		http.Error(w, "failed to get file from form", http.StatusBadRequest)
 	}
